@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 def get_all_links(lang="tr"):
     link0 = f"https://teknofest.org/{lang}/yarismalar/"
@@ -22,3 +23,14 @@ def get_all_links(lang="tr"):
     #         f.write(x)
 
     return list_of_links
+
+def get_name_from_link(link):
+    x =  (urlparse(link)).path.strip('/').split('/')[-1]
+    return x
+
+def get_all_names(lang="tr"):
+    links = get_all_links(lang)
+    names = []
+    for link in links:
+        names.append(get_name_from_link(link))
+    return names
