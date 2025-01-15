@@ -4,7 +4,7 @@ from urllib.parse import urlparse, unquote, urljoin
 from bs4 import BeautifulSoup
 from app.services import download
 
-def scrape_link(page):
+def scrape_page(page):
     try:
         link = f"https://teknofest.org/tr/competitions/competition_report/?search=&page={page}"
         response0 = requests.get(link)
@@ -46,7 +46,14 @@ def scrape_link(page):
     except requests.exceptions.RequestException as e:
         print(f"Error while fetching the page: {e}")
 
+
+def scrape_all_links(first_page=1, last_page=200):   
+    for i in range(first_page, last_page):
+        print(f"Processing page: {i}")
+        scrape_page(i)
+
+
 if __name__ == "__main__":
     link0 = "https://teknofest.org/tr/competitions/competition_report/"
 
-    scrape_link(link0)
+    scrape_page(link0)
