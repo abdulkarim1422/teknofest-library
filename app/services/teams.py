@@ -4,8 +4,9 @@ from urllib.parse import urlparse, unquote, urljoin
 from bs4 import BeautifulSoup
 from app.services import download
 
-def scrape_link(link):
+def scrape_link(page):
     try:
+        link = f"https://teknofest.org/tr/competitions/competition_report/?search=&page={page}"
         response0 = requests.get(link)
         response0.raise_for_status()
         content0 = response0.content
