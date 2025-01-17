@@ -29,3 +29,8 @@ def scrape_link(link):
                 print("No x-subElement")
     else:
         print("The specified element was not found.")
+
+def scrape_all_links(lang="tr"):
+    all_links = links.get_all_links(lang)
+    for link in all_links:
+        scrape_link(link)
