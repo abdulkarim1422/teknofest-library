@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse, unquote
 import os
 from app.services import download
+from app.services.competitions import links
 
 def scrape_link(link):
     response = requests.get(link)
@@ -19,7 +20,8 @@ def scrape_link(link):
                     
                     file_name = os.path.basename(urlparse(file_url).path)
                     
-                    folder_path = os.path.join(os.getcwd(), folder_name)
+                    comp_name = links.get_name_from_link(link)
+                    folder_path = os.path.join(os.getcwd(), comp_name, folder_name)
                     os.makedirs(folder_path, exist_ok=True)
                     
                     download.download_file(file_url, os.path.join(folder_path, file_name))
