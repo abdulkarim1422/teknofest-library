@@ -33,5 +33,7 @@ def get_all_names(lang="tr"):
     links = get_all_links(lang)
     names = []
     for link in links:
-        names.append(get_name_from_link(link))
+        x = get_name_from_link(link)
+        names.append(x)
+        print(x)
     return names
