@@ -26,4 +26,9 @@ async def scrape_competition(
     scrape.scrape_link(link)
     return
 
-
+@router.get("/scrape-all-competitions")
+async def scrape_all_competitions(
+    lang: str = Query("tr", description="language")
+):
+    scrape.scrape_all_links(lang)
+    return
