@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Request, Query
+from fastapi import APIRouter, Query
 from app.services import teams
+from app.services.competitions import scrape, links
 
 router = APIRouter()
 
@@ -17,3 +18,12 @@ async def download_all_teams_files(
 ):
     teams.scrape_all_links(first_page, last_page)
     return
+
+@router.get("/scrape-competition")
+async def scrape_competition(
+    link: str = Query(..., description="competition link")
+):
+    scrape.scrape_link(link)
+    return
+
+
