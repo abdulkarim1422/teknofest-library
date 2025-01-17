@@ -16,6 +16,7 @@ def get_all_links(lang="tr"):
         x = "https://teknofest.org" + i.get('href')
         if x not in list_of_links:
             list_of_links.append(x)
+            print(x)
 
     # with open("links.txt", 'w') as f: 
     #     for item in list_of_links:
