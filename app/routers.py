@@ -19,16 +19,22 @@ async def download_all_teams_files(
     teams.scrape_all_links(first_page, last_page)
     return
 
-@router.get("/scrape-competition")
+@router.get("/competition-scrape")
 async def scrape_competition(
     link: str = Query(..., description="competition link")
 ):
     scrape.scrape_link(link)
     return
 
-@router.get("/scrape-all-competitions")
+@router.get("/competition-scrape-all")
 async def scrape_all_competitions(
     lang: str = Query("tr", description="language")
 ):
     scrape.scrape_all_links(lang)
     return
+
+@router.get("/competition-links")
+async def get_competition_links(
+    lang: str = Query("tr", description="language")
+):
+    return links.get_all_links(lang)
