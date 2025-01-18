@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Query
 from app.services import teams
-from app.services.competitions import scrape, links
+from app.services.competitions import links_service, scrape
+from app.services.dates import call
 
 router = APIRouter()
 
@@ -37,10 +38,17 @@ async def scrape_all_competitions(
 async def get_competition_links(
     lang: str = Query("tr", description="language")
 ):
-    return links.get_all_links(lang)
+    return links_service.get_all_links(lang)
 
 @router.get("/competition-names")
 async def get_competition_names(
     lang: str = Query("tr", description="language")
 ):
-    return links.get_all_names(lang)
+    return links_service.get_all_names(lang)
+
+@router.get("/competition-dates-csv")
+async def get_competition_dates(
+    lang: str = Query("tr", description="language")
+):
+    call.process_links(lang)
+    return
