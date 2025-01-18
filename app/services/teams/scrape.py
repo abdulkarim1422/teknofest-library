@@ -45,15 +45,3 @@ def scrape_page(page):
             print("The specified element was not found.")
     except requests.exceptions.RequestException as e:
         print(f"Error while fetching the page: {e}")
-
-
-def scrape_all_links(first_page=1, last_page=200):   
-    for i in range(first_page, last_page):
-        print(f"Processing page: {i}")
-        scrape_page(i)
-
-
-if __name__ == "__main__":
-    link0 = "https://teknofest.org/tr/competitions/competition_report/"
-
-    scrape_page(link0)
