@@ -33,7 +33,7 @@ def scrape_page(page):
                     try:
                         team_link_relative = tr.find_all('td')[3].find('a')['href']
                         team_link = urljoin("https://teknofest.org", team_link_relative)
-                        team_link_file_path = os.path.join(os.getcwd(), comp_name, year, f"{team_name}_intro.html")
+                        team_link_file_path = os.path.join(os.getcwd(), "teams", comp_name, year, f"{team_name}_intro.html")
                         download.download_file(team_link, team_link_file_path)
                     except:
                         print(f"team file failed for {team_name}")
