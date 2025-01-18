@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse, unquote
 import os
 from app.services import download
-from app.services.competitions import links
+from app.services.competitions import links_service
 
 def scrape_link(link):
     response = requests.get(link)
@@ -20,7 +20,7 @@ def scrape_link(link):
                     
                     file_name = os.path.basename(urlparse(file_url).path)
                     
-                    comp_name = links.get_name_from_link(link)
+                    comp_name = links_service.get_name_from_link(link)
                     folder_path = os.path.join(os.getcwd(), comp_name, folder_name)
                     os.makedirs(folder_path, exist_ok=True)
                     
@@ -31,6 +31,6 @@ def scrape_link(link):
         print("The specified element was not found.")
 
 def scrape_all_links(lang="tr"):
-    all_links = links.get_all_links(lang)
+    all_links = links_service.get_all_links(lang)
     for link in all_links:
         scrape_link(link)
