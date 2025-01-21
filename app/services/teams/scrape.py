@@ -20,21 +20,22 @@ def scrape_page(page):
                     team_name = tr.find_all('td')[0].find('a').text.strip()
                     year = tr.find_all('td')[1].text.strip()
 
-                    folder_path = os.path.join(os.getcwd(), comp_name, year)
+                    folder_path = os.path.join(os.getcwd(), "teams", comp_name, year)
                     os.makedirs(folder_path, exist_ok=True)
 
                     try:
                         report_link = tr.find_all('td')[2].find('a')['href']
                         base_file_name = unquote(os.path.basename(urlparse(report_link).path))
                         prefixed_file_name = f"{team_name}_{base_file_name}"
-                        download.download_file(report_link, os.path.join(folder_path, prefixed_file_name))
+                        full_file_pah = os.path.join(folder_path, prefixed_file_name)
+                        download.download_file(report_link, full_file_pah)
                     except:
                         print(f"report failed for {team_name}")
                     try:
                         team_link_relative = tr.find_all('td')[3].find('a')['href']
                         team_link = urljoin("https://teknofest.org", team_link_relative)
-                        team_link_file_path = os.path.join(os.getcwd(), "teams", comp_name, year, f"{team_name}_intro.html")
-                        download.download_file(team_link, team_link_file_path)
+                        full_file_pah = os.path.join(folder_path, f"{team_name}_intro.html")
+                        download.download_file(team_link, full_file_pah)
                     except:
                         print(f"team file failed for {team_name}")
                     
