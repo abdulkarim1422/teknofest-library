@@ -173,3 +173,6 @@ cython_debug/
 # app
 notes.md
 downloads
+
+# tests
+tests.ipynb
