@@ -9,3 +9,12 @@ class Team(SQLModel, table=True):
     created_at: datetime = Field(default=datetime.utcnow)
     updated_at: datetime = Field(default=datetime.utcnow)
     deleted_at: Optional[datetime] = None
+    description: str
+    stage: str # University, High School, Middle School, etc.
+    member_count: int
+    members: list[uuid.UUID]
+    leader: uuid.UUID
+    competition_id: uuid.UUID
+    years: list[int]
+    status: str
+    rank: int
