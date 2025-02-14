@@ -8,13 +8,17 @@ class Competition(SQLModel, table=True):
     created_at: datetime = Field(default=datetime.utcnow)
     updated_at: datetime = Field(default=datetime.utcnow)
     deleted_at: Optional[datetime] = None
-    number: int
+    number: int # used in the URL Query
     tr_name: str
-    en_name: str
-    ar_name: str
     tr_description: str
+    tr_link: str
+    en_name: str
     en_description: str
+    en_link: str
+    ar_name: str
     ar_description: str
-    years: list[int]
-    min_member: int
-    max_member: int
+    ar_link: str
+    years: list[int] # The years that the competition is held
+    min_member: int # Minimum number of members in a team
+    max_member: int # Maximum number of members in a team
+    comments: list[uuid.UUID]
