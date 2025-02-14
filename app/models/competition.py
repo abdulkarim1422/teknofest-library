@@ -22,3 +22,6 @@ class Competition(SQLModel, table=True):
     min_member: int # Minimum number of members in a team
     max_member: int # Maximum number of members in a team
     comments: list[uuid.UUID]
+    reports_files: dict[int, str] # Links or File paths to the previous years' reports of the competition and the year that the reports belong to
+    results_files: dict[int, str] # Links or File paths to the previous years' results of the competition and the year that the results belong to
+    
