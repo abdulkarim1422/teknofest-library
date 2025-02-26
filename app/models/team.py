@@ -18,3 +18,4 @@ class Team(SQLModel, table=True):
     years: list[int]
     status: str
     rank: int
+    relation: str # central, related, friend, none
