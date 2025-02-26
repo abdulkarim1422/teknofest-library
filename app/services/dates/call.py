@@ -12,5 +12,4 @@ def process_links(lang="tr"):
                 csv.write_to_csv(line, 'X.cvs')
 
 if __name__ == "__main__":
-    links = ["https://teknofest.org/tr/yarismalar/biyoteknoloji-inovasyon-yarismasi/", "https://teknofest.org/tr/yarismalar/insansiz-hava-araci-yarismasi/"]
-    process_links(links)
+    process_links("tr")
