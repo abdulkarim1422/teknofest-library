@@ -22,7 +22,7 @@ def scrape_page(page):
                     team_name = tr.find_all('td')[0].find('a').text.strip()
                     year = tr.find_all('td')[1].text.strip()
 
-                    folder_path = os.path.join(os.getcwd(), "teams", comp_name, year)
+                    folder_path = os.path.join(os.getcwd(), comp_name, "teams", year)
                     os.makedirs(folder_path, exist_ok=True)
 
                     try:
