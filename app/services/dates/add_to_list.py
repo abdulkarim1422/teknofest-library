@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from app.services.dates.convert_dates import convert_full_date
+from app.services.unify.function import find_original_sentence
 
 def extract_dates_to_list(url):
     print(f"Processing: {url}")
@@ -11,6 +12,7 @@ def extract_dates_to_list(url):
     target_contents = soup.select('div.tab-pane.tab-pane-navigation')
 
     competition_name = soup.find('h1', class_='text-white').text.strip()
+    competition_name = find_original_sentence(competition_name)
     list0 = []
 
     target_content = None
