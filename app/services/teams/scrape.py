@@ -3,6 +3,7 @@ import requests
 from urllib.parse import urlparse, unquote, urljoin
 from bs4 import BeautifulSoup
 from app.services import download
+from app.services.unify.function import find_original_sentence
 
 def scrape_page(page):
     try:
@@ -17,6 +18,7 @@ def scrape_page(page):
             for tr in the_table0.find_all('tr'):
                 try:
                     comp_name = tr.find('th').find('a').text.strip()
+                    comp_name = find_original_sentence(comp_name)
                     team_name = tr.find_all('td')[0].find('a').text.strip()
                     year = tr.find_all('td')[1].text.strip()
 
