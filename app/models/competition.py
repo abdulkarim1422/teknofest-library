@@ -5,8 +5,8 @@ import uuid
 
 class Competition(SQLModel, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
-    created_at: datetime = Field(default=datetime.utcnow)
-    updated_at: datetime = Field(default=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
+    updated_at: datetime = Field(default=datetime.now(datetime.timezone.utc))
     deleted_at: Optional[datetime] = None
     number: int # used in the URL Query
     tr_name: str
@@ -22,6 +22,25 @@ class Competition(SQLModel, table=True):
     min_member: int # Minimum number of members in a team
     max_member: int # Maximum number of members in a team
     comments: list[uuid.UUID]
-    reports_files: dict[int, str] # Links or File paths to the previous years' reports of the competition and the year that the reports belong to
-    results_files: dict[int, str] # Links or File paths to the previous years' results of the competition and the year that the results belong to
-    
+
+class Report_File(SQLModel, table=True):
+    id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
+    created_at: datetime = Field(default=datetime.utcnow)
+    updated_at: datetime = Field(default=datetime.utcnow)
+    deleted_at: Optional[datetime] = None
+    competition_id: uuid.UUID
+    year: int
+    file_path: str
+    rank: Optional[str] = None  # "finalist", "derece"
+    stage : Optional[str] = None  # "critical-design", "pre-assessment", "final-assessment", "final-presentation"
+    language: Optional[str] = None  # "tr", "en", "ar"
+
+class Result_File(SQLModel, table=True):
+    id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
+    created_at: datetime = Field(default=datetime.utcnow)
+    updated_at: datetime = Field(default=datetime.utcnow)
+    deleted_at: Optional[datetime] = None
+    competition_id: uuid.UUID
+    year: int
+    stage: str # "final", "pre-assessment"
+    file_path: str
