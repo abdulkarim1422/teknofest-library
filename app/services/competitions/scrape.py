@@ -4,6 +4,7 @@ from urllib.parse import urlparse, unquote
 import os
 from app.services import download
 from app.services.competitions import links_service
+from app.services.unify.function import find_original_sentence
 
 def scrape_link(link):
     response = requests.get(link)
@@ -21,6 +22,7 @@ def scrape_link(link):
                     file_name = os.path.basename(urlparse(file_url).path)
                     
                     comp_name = links_service.get_name_from_link(link)
+                    comp_name = find_original_sentence(comp_name)
                     folder_path = os.path.join(os.getcwd(), "competitions", comp_name, folder_name)
                     os.makedirs(folder_path, exist_ok=True)
                     
