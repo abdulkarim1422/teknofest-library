@@ -1,5 +1,6 @@
 from difflib import get_close_matches
 import unicodedata
+from app.services.unify.lists import full_groups
 
 # Function to remove accents and normalize non-Latin characters
 def normalize_text(text):
@@ -7,7 +8,7 @@ def normalize_text(text):
     text = unicodedata.normalize("NFKD", text)  # Normalize accented characters
     return "".join(c for c in text if not unicodedata.combining(c))  # Remove diacritics
 
-def find_original_sentence(sentence, groups, threshold=0.5):
+def find_original_sentence(sentence, groups=full_groups, threshold=0.5):
     lookup = {}
     all_phrases = []
     
