@@ -1,0 +1,105 @@
+from sqlalchemy.orm import Session
+from app.models.competition import Competition, Report_File, Result_File
+
+class CompetitionCRUD:
+    def __init__(self, db: Session):
+        self.db = db
+
+    def get_competition(self, competition_id: int):
+        return self.db.query(Competition).filter(Competition.id == competition_id).first()
+
+    def get_competitions(self, skip: int = 0, limit: int = 10):
+        return self.db.query(Competition).offset(skip).limit(limit).all()
+
+    def create_competition(self, competition: Competition):
+        self.db.add(competition)
+        self.db.commit()
+        self.db.refresh(competition)
+        return competition
+
+    def update_competition(self, competition_id: int, competition: Competition):
+        db_competition = self.get_competition(competition_id)
+        if db_competition is None:
+            return None
+        for key, value in competition.dict().items():
+            setattr(db_competition, key, value)
+        self.db.commit()
+        self.db.refresh(db_competition)
+        return db_competition
+
+    def delete_competition(self, competition_id: int):
+        db_competition = self.get_competition(competition_id)
+        if db_competition is None:
+            return None
+        self.db.delete(db_competition)
+        self.db.commit()
+        return db_competition
+    
+class ReportFileCRUD:
+    def __init__(self, db: Session):
+        self.db = db
+
+    def get_report_file(self, report_file_id: int):
+        return self.db.query(Report_File).filter(Report_File.id == report_file_id).first()
+    
+    def get_report_files(self, skip: int = 0, limit: int = 10):
+        return self.db.query(Report_File).offset(skip).limit(limit).all()
+    
+    def create_report_file(self, report_file: Report_File):
+        self.db.add(report_file)
+        self.db.commit()
+        self.db.refresh(report_file)
+        return report_file
+    
+    def update_report_file(self, report_file_id: int, report_file: Report_File):
+        db_report_file = self.get_report_file(report_file_id)
+        if db_report_file is None:
+            return None
+        for key, value in report_file.dict().items():
+            setattr(db_report_file, key, value)
+        self.db.commit()
+        self.db.refresh(db_report_file)
+        return db_report_file
+    
+    def delete_report_file(self, report_file_id: int):
+        db_report_file = self.get_report_file(report_file_id)
+        if db_report_file is None:
+            return None
+        self.db.delete(db_report_file)
+        self.db.commit()
+        return db_report_file
+    
+class ResultFileCRUD:
+    def __init__(self, db: Session):
+        self.db = db
+    
+    def get_result_file(self, result_file_id: int):
+        return self.db.query(Result_File).filter(Result_File.id == result_file_id).first()
+    
+    def get_result_files(self, skip: int = 0, limit: int = 10):
+        return self.db.query(Result_File).offset(skip).limit(limit).all()
+    
+    def create_result_file(self, result_file: Result_File):
+        self.db.add(result_file)
+        self.db.commit()
+        self.db.refresh(result_file)
+        return result_file
+    
+    def update_result_file(self, result_file_id: int, result_file: Result_File):
+        db_result_file = self.get_result_file(result_file_id)
+        if db_result_file is None:
+            return None
+        for key, value in result_file.dict().items():
+            setattr(db_result_file, key, value)
+        self.db.commit()
+        self.db.refresh(db_result_file)
+        return db_result_file
+    
+    def delete_result_file(self, result_file_id: int):
+        db_result_file = self.get_result_file(result_file_id)
+        if db_result_file is None:
+            return None
+        self.db.delete(db_result_file)
+        self.db.commit()
+        return db_result_file
+    
