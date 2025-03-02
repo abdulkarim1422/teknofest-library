@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from app.services.dates.convert_dates import convert_full_date
+from app.services.scrape.dates.convert_dates import convert_full_date
 from app.services.unify.function import find_original_sentence
 
 def extract_dates_to_list(url):

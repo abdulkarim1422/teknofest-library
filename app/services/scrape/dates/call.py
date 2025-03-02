@@ -1,6 +1,6 @@
-from app.services.dates import csv
-from app.services.dates import add_to_list
-from app.services.competitions import links_service
+from app.services.scrape.dates import csv
+from app.services.scrape.dates import add_to_list
+from app.services.scrape.competitions import links_service
 
 def process_links(lang="tr"):
     links = links_service.get_all_links(lang)

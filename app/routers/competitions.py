@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from app.services.competitions import links_service, scrape
+from app.services.scrape.competitions import links_service, scrape
 
 router = APIRouter()
 

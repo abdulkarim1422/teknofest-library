@@ -1,6 +1,6 @@
-from app.services.announcements.links_service import api_parse_page
-from app.services.announcements.page_service import parsing_announcement_page
-from app.services.announcements.file_service import download_the_files, sanitize_filename
+from app.services.scrape.announcements.links_service import api_parse_page
+from app.services.scrape.announcements.page_service import parsing_announcement_page
+from app.services.scrape.announcements.file_service import download_the_files, sanitize_filename
 import os 
 
 # list all links

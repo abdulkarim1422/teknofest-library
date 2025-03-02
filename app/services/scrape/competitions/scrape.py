@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse, unquote
 import os
 from app.services import download
-from app.services.competitions import links_service
+from app.services.scrape.competitions import links_service
 from app.services.unify.function import find_original_sentence
 
 def scrape_link(link):

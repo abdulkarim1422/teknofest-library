@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from app.services.teams import call, scrape
+from app.services.scrape.teams import call, scrape
 
 router = APIRouter()
 

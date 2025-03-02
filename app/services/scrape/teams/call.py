@@ -1,4 +1,4 @@
-from app.services.teams import scrape 
+from app.services.scrape.teams import scrape 
 import time
 
 def scrape_all_links(first_page=1, last_page=200):
