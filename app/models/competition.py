@@ -8,6 +8,8 @@ class Competition(SQLModel, table=True):
     created_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
     updated_at: datetime = Field(default=datetime.now(datetime.timezone.utc))
     deleted_at: Optional[datetime] = None
+    image_path: str
+    # is_open: bool
     tk_number: int # used in the Teams page
     t3kys_number: int # used in the t3kys platform
     application_link: str
