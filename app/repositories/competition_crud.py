@@ -10,6 +10,9 @@ class CompetitionCRUD:
 
     def get_competitions(self, skip: int = 0, limit: int = 10):
         return self.db.query(Competition).offset(skip).limit(limit).all()
+    
+    def get_all_competitions(self, year: int):
+        return self.db.query(Competition).filter(Competition.year == year).all()
 
     def create_competition(self, competition: Competition):
         self.db.add(competition)
@@ -35,6 +38,24 @@ class CompetitionCRUD:
         self.db.commit()
         return db_competition
     
+    def get_competition_by_tr_name(self, name: str):
+        return self.db.query(Competition).filter(Competition.tr_name.contains(name)).all()
+    
+    def get_competition_by_en_name(self, name: str):
+        return self.db.query(Competition).filter(Competition.en_name.contains(name)).all()
+    
+    def get_competition_by_ar_name(self, name: str):
+        return self.db.query(Competition).filter(Competition.ar_name.contains(name)).all()
+    
+    def get_competitions_by_year(self, year: int):
+        return self.db.query(Competition).filter(Competition.years.contains(year)).all()
+    
+    def get_competitions_by_tk_number(self, tk_number: str):
+        return self.db.query(Competition).filter(Competition.tk_number == tk_number).all()
+    
+    def get_competitions_by_t3kys_number(self, t3kys_number: str):
+        return self.db.query(Competition).filter(Competition.t3kys_number == t3kys_number).all()
+
 class ReportFileCRUD:
     def __init__(self, db: Session):
         self.db = db
