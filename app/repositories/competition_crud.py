@@ -39,22 +39,22 @@ class CompetitionCRUD:
         return db_competition
     
     def get_competition_by_tr_name(self, name: str):
-        return self.db.query(Competition).filter(Competition.tr_name.contains(name)).all()
+        return self.db.query(Competition).filter(Competition.tr_name.contains(name)).first()
     
     def get_competition_by_en_name(self, name: str):
-        return self.db.query(Competition).filter(Competition.en_name.contains(name)).all()
+        return self.db.query(Competition).filter(Competition.en_name.contains(name)).first()
     
     def get_competition_by_ar_name(self, name: str):
-        return self.db.query(Competition).filter(Competition.ar_name.contains(name)).all()
+        return self.db.query(Competition).filter(Competition.ar_name.contains(name)).first()
     
     def get_competitions_by_year(self, year: int):
         return self.db.query(Competition).filter(Competition.years.contains(year)).all()
     
-    def get_competitions_by_tk_number(self, tk_number: str):
-        return self.db.query(Competition).filter(Competition.tk_number == tk_number).all()
+    def get_competition_by_tk_number(self, tk_number: str):
+        return self.db.query(Competition).filter(Competition.tk_number == tk_number).first()
     
-    def get_competitions_by_t3kys_number(self, t3kys_number: str):
-        return self.db.query(Competition).filter(Competition.t3kys_number == t3kys_number).all()
+    def get_competition_by_t3kys_number(self, t3kys_number: str):
+        return self.db.query(Competition).filter(Competition.t3kys_number == t3kys_number).first()
 
 class ReportFileCRUD:
     def __init__(self, db: Session):
