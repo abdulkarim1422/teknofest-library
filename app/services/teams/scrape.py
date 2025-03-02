@@ -29,15 +29,15 @@ def scrape_page(page):
                         report_link = tr.find_all('td')[2].find('a')['href']
                         base_file_name = unquote(os.path.basename(urlparse(report_link).path))
                         prefixed_file_name = f"{team_name}_{base_file_name}"
-                        full_file_pah = os.path.join(folder_path, prefixed_file_name)
-                        download.download_file(report_link, full_file_pah)
+                        full_report_file_path = os.path.join(folder_path, prefixed_file_name)
+                        download.download_file(report_link, full_report_file_path)
                     except:
                         print(f"report failed for {team_name}")
                     try:
                         team_link_relative = tr.find_all('td')[3].find('a')['href']
                         team_link = urljoin("https://teknofest.org", team_link_relative)
-                        full_file_pah = os.path.join(folder_path, f"{team_name}_intro.html")
-                        download.download_file(team_link, full_file_pah)
+                        full_intro_file_path = os.path.join(folder_path, f"{team_name}_intro.html")
+                        download.download_file(team_link, full_intro_file_path)
                     except:
                         print(f"team file failed for {team_name}")
                     
