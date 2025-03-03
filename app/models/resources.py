@@ -2,13 +2,13 @@ from sqlmodel import SQLModel, Field
 from sqlalchemy import Column
 from sqlalchemy.types import JSON
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 class Resource(SQLModel, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
-    created_at: datetime = Field(default=datetime.utcnow)
-    updated_at: datetime = Field(default=datetime.utcnow)
+    created_at: datetime = Field(default=datetime.now(timezone.utc))
+    updated_at: datetime = Field(default=datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
     competition_id: uuid.UUID # The competition that the resource is related to
     team_id: uuid.UUID # The team that created the resource
