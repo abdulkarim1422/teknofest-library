@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import uuid
 
 class Member(SQLModel, table=True):
-    id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
+    id: Optional[uuid.UUID] = Field(default_factory=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default=datetime.now(timezone.utc))
     updated_at: datetime = Field(default=datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
