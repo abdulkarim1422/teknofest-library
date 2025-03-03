@@ -1,4 +1,6 @@
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column
+from sqlalchemy.types import JSON
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -6,7 +8,7 @@ import uuid
 class Competition(SQLModel, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
     created_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
-    updated_at: datetime = Field(default=datetime.now(datetime.timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
     deleted_at: Optional[datetime] = None
     image_path: str
     # is_open: bool
@@ -22,10 +24,10 @@ class Competition(SQLModel, table=True):
     ar_name: str
     ar_description: str
     ar_link: str
-    years: list[int] # The years that the competition is held
+    years: list[int] = Field(default_factory=list, sa_column=Column(JSON)) # The years that the competition is held
     min_member: int # Minimum number of members in a team
     max_member: int # Maximum number of members in a team
-    comments: list[uuid.UUID]
+    # comments: list[uuid.UUID]
 
 class Report_File(SQLModel, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
