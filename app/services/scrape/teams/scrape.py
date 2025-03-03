@@ -26,6 +26,7 @@ def scrape_page(page, update_database: bool = False):
                     folder_path = os.path.join(os.getcwd(), comp_name, "teams", year)
                     os.makedirs(folder_path, exist_ok=True)
 
+                    full_report_file_path = None
                     try:
                         report_link = tr.find_all('td')[2].find('a')['href']
                         base_file_name = unquote(os.path.basename(urlparse(report_link).path))
