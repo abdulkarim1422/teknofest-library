@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from app.models.competition import Competition, Report_File, Result_File
+from app.initializers.db import engine
 
 class CompetitionCRUD:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self):
+        self.db = Session(engine)
 
     def get_competition(self, competition_id: int):
         return self.db.query(Competition).filter(Competition.id == competition_id).first()
