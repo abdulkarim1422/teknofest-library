@@ -5,7 +5,8 @@ from app.models.team import Team
 from app.models.competition import Report_File
 
 def get_teams_by_competition_en_name(name: str):
-    competition_obj = competition_crud.CompetitionCRUD.get_competition_by_en_name(name)
+    competition_crud_class = competition_crud.CompetitionCRUD()
+    competition_obj = competition_crud_class.get_competition_by_en_name(name)
     if competition_obj is None:
         return None
     return team_crud.TeamCRUD.get_teams_by_competition_id(competition_obj.id)
@@ -22,11 +23,25 @@ def update_or_create_team(
     team_link,
     status
 ):
+    print(f"""
+          received team info:
+            name: {name}
+            members_list: {members_list}
+            description: {description}
+            institution_name: {institution_name}
+            comp_name: {comp_name}
+            year: {year}
+            report_file_path: {report_file_path}
+            intro_file_path: {intro_file_path}
+            team_link: {team_link}
+            status: {status}
+        """)
     try:
         competition_obj = competition_crud_services.get_competition_en_name_via_any_name(comp_name)
         if competition_obj:
             competition_id = competition_obj.id
-        db_team = team_crud.TeamCRUD.get_teams_by_name_and_year(name, int(year))
+        team_crud_class = team_crud.TeamCRUD()
+        db_team = team_crud_class.get_team_by_name_and_year(name=name, year=int(year))
         if db_team is None: # create new team
             db_team = Team(
                 name=name,
