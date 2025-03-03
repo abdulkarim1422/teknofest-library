@@ -8,7 +8,7 @@ from app.services.unify.function import find_original_sentence
 from datetime import datetime
 from app.services.repo_additional import competition_crud_services
 
-def scrape_link(link, update_database: bool = False, year=None, session_id=None):
+def scrape_link(link, update_downloads: bool = False, update_database: bool = False, year=None, session_id=None):
     # set session_id if year is specified and session_id is not provided
     if session_id:
         response = requests.get(link, cookies={'sessionid': session_id})
@@ -21,23 +21,25 @@ def scrape_link(link, update_database: bool = False, year=None, session_id=None)
     
     content = response.content
     soup = BeautifulSoup(content, 'html.parser')
-    the_list = soup.find_all('div', class_="tab-pane tab-pane-navigation")
+    tabs_in_the_page = soup.find_all('div', class_="tab-pane tab-pane-navigation")
 
-    if the_list:
-        for x in the_list:
-            if x:
-                for li in x.find_all("li"):
-                    file_url = unquote(li.find('a').get('href').strip())
-                    folder_name = li.find('a').find('p', class_="m-0 p-0 font-weight-bold").get_text().strip().replace('/', '-')
+    if tabs_in_the_page:
+        for tab in tabs_in_the_page:
+            if tab:
+                for li_list_element in tab.find_all("li"):
+                    if li_list_element.find('a') is None:
+                        continue
+                    report_file_url = unquote(li_list_element.find('a').get('href').strip())
+                    folder_name = li_list_element.find('a').find('p', class_="m-0 p-0 font-weight-bold").get_text().strip().replace('/', '-')
                     
-                    file_name = os.path.basename(urlparse(file_url).path)
+                    file_name = os.path.basename(urlparse(report_file_url).path)
                     
-                    comp_name = links_service.get_name_from_link(link)
-                    unified_comp_name = find_original_sentence(comp_name)
+                    comp_name_in_link = links_service.get_name_from_link(link)
+                    unified_comp_name = find_original_sentence(comp_name_in_link)
                     folder_path = os.path.join(os.getcwd(), unified_comp_name, "reports", folder_name)
                     os.makedirs(folder_path, exist_ok=True)
-                    
-                    download.download_file(file_url, os.path.join(folder_path, file_name))
+                    if update_downloads:
+                        download.download_file(report_file_url, os.path.join(folder_path, file_name))
             else:
                 print("No x-subElement")
     else:
@@ -48,6 +50,7 @@ def scrape_link(link, update_database: bool = False, year=None, session_id=None)
         image_link = get_competition_image_link(soup)
         comp_description = get_competition_description(soup)
         application_link = get_competition_application_link(soup)
+        comp_name = get_competition_name(soup)
 
         competition_crud_services.update_or_create_competition(
             link=link,
@@ -59,7 +62,7 @@ def scrape_link(link, update_database: bool = False, year=None, session_id=None)
             year=year,
         )
 
-def scrape_all_links(lang="tr", update_database: bool = False, year=None):
+def scrape_all_links(lang="tr", update_downloads: bool = False, update_database: bool = False, year=None):
     # set session_id if year is specified
     if year:
         session_id = get_session_id_for_specific_year(year)
@@ -68,7 +71,7 @@ def scrape_all_links(lang="tr", update_database: bool = False, year=None):
 
     all_links = links_service.get_all_links(lang)
     for link in all_links:
-        scrape_link(link=link, update_database=update_database, year=year, session_id=session_id)
+        scrape_link(link=link, update_downloads=update_downloads, update_database=update_database, year=year, session_id=session_id)
 
 
 
@@ -101,6 +104,14 @@ def get_page_lang(response):
         return content_language
     except:
         return None
+    
+def get_competition_name(soup):
+    try:
+        competition_name = soup.find('div', class_='container').find('h1').text.strip()
+        return competition_name
+    except:
+        return None
+
 
 # options
 def get_session_id_for_specific_year(year):
