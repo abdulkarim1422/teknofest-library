@@ -10,7 +10,7 @@ class Team(SQLModel, table=True):
     updated_at: datetime = Field(default=datetime.utcnow)
     deleted_at: Optional[datetime] = None
     description: str
-    stage: Optional[str]: None # University, High School, Middle School, etc.
+    stage: Optional[str] = None # University, High School, Middle School, etc.
     institution_name: Optional[str] = None
     member_count: Optional[int] = None
     tap_members: Optional[list[uuid.UUID]] = None
