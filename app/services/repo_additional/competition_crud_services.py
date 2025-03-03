@@ -14,13 +14,15 @@ def get_competition_obj_via_any_name(name: str):
     unified_name = find_original_sentence(name)
     competition_obj = competition_crud_class.get_competition_by_en_name(name=unified_name)
     if not competition_obj:
-        competition_obj = competition_crud_class.get_competition_by_tr_name(name=name)
+        competition_obj = competition_crud_class.get_competition_by_en_link(en_link=unified_name)
         if not competition_obj:
-            competition_obj = competition_crud_class.get_competition_by_en_name(name=name)
+            competition_obj = competition_crud_class.get_competition_by_tr_name(name=name)
             if not competition_obj:
-                competition_obj = competition_crud_class.get_competition_by_ar_name(name=name)
+                competition_obj = competition_crud_class.get_competition_by_en_name(name=name)
                 if not competition_obj:
-                    return None
+                    competition_obj = competition_crud_class.get_competition_by_ar_name(name=name)
+                    if not competition_obj:
+                        return None
     return competition_obj
 
 def update_or_create_competition(
