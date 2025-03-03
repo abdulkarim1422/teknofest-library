@@ -94,12 +94,18 @@ def update_or_create_competition(
         competition_crud_class.create_competition(competition_obj_new)
 
     else:  # update existing competition
-        competition_obj_new.image_path = image_link
-        competition_obj_new.tk_number = tk_number
-        competition_obj_new.t3kys_number = t3kys_number
-        competition_obj_new.years.append(year)
-        competition_obj_new.min_member = min_member
-        competition_obj_new.max_member = max_member
+        if image_link:
+            competition_obj_new.image_path = image_link
+        if tk_number:
+            competition_obj_new.tk_number = tk_number
+        if t3kys_number:
+            competition_obj_new.t3kys_number = t3kys_number
+        if year not in competition_obj_new.years:
+            competition_obj_new.years.append(year)
+        if min_member:
+            competition_obj_new.min_member = min_member
+        if max_member:
+            competition_obj_new.max_member = max_member
 
         competition_crud_class.update_competition(competition_id, competition_obj_new)
 
