@@ -2,13 +2,13 @@ from sqlmodel import SQLModel, Field
 from sqlalchemy import Column
 from sqlalchemy.types import JSON
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 class Competition(SQLModel, table=True):
     id: Optional[uuid.UUID] = Field(default=uuid.uuid4, primary_key=True)
-    created_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(datetime.timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     deleted_at: Optional[datetime] = None
     image_path: str
     # is_open: bool
