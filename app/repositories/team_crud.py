@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from app.models.team import Team
+from app.initializers.db import engine
 
 class TeamCRUD:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self):
+        self.db = Session(engine)
 
     def get_team(self, team_id: int):
         return self.db.query(Team).filter(Team.id == team_id).first()
@@ -74,5 +75,5 @@ class TeamCRUD:
     def get_teams_by_competition_id_and_relation(self, competition_id: int, relation: str):
         return self.db.query(Team).filter(Team.competition_id == competition_id, Team.relation == relation).all()
     
-    def get_teams_by_name_and_year(self, name: str, year: int):
-        return self.db.query(Team).filter(Team.name == name, Team.years.contains(year)).all()
+    def get_team_by_name_and_year(self, name: str, year: int):
+        return self.db.query(Team).filter(Team.name == name, Team.years.contains([year])).first()
