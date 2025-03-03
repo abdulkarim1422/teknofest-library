@@ -5,6 +5,8 @@ import os
 from app.services import download
 from app.services.scrape.competitions import links_service
 from app.services.unify.function import find_original_sentence
+from datetime import datetime
+from app.services.repo_additional import competition_crud_services
 
 def scrape_link(link, update_database: bool = False, year=None, session_id=None):
     # set session_id if year is specified and session_id is not provided
@@ -15,6 +17,7 @@ def scrape_link(link, update_database: bool = False, year=None, session_id=None)
         response = requests.get(link, cookies={'sessionid': session_id})
     else:
         response = requests.get(link)
+        year = datetime.now().year
     
     content = response.content
     soup = BeautifulSoup(content, 'html.parser')
@@ -35,33 +38,26 @@ def scrape_link(link, update_database: bool = False, year=None, session_id=None)
                     os.makedirs(folder_path, exist_ok=True)
                     
                     download.download_file(file_url, os.path.join(folder_path, file_name))
-
-                    if update_database:
-                        update_or_create_competition(
-                            link=link,
-                            image_link=image_link,
-                            tk_number=tk_number,
-                            t3kys_number=t3kys_number,
-                            application_link_tr=application_link_tr,
-                            application_link_en=application_link_en,
-                            application_link_ar=application_link_ar,
-                            tr_name=tr_name,
-                            tr_description=tr_description,
-                            tr_link=tr_link,
-                            en_name=en_name,
-                            en_description=en_description,
-                            en_link=en_link,
-                            ar_name=ar_name,
-                            ar_description=ar_description,
-                            ar_link=ar_link,
-                            year=year,
-                            min_member=min_member,
-                            max_member=max_member
-                        )
             else:
                 print("No x-subElement")
     else:
         print("The specified element was not found.")
+    
+    # update database with competition data
+    if update_database:
+        image_link = get_competition_image_link(soup)
+        comp_description = get_competition_description(soup)
+        application_link = get_competition_application_link(soup)
+
+        competition_crud_services.update_or_create_competition(
+            link=link,
+            image_link=image_link,
+            application_link=application_link,
+            comp_name=comp_name,
+            comp_description=comp_description,
+            comp_link=link,
+            year=year,
+        )
 
 def scrape_all_links(lang="tr", update_database: bool = False, year=None):
     # set session_id if year is specified
