@@ -63,6 +63,9 @@ class TeamCRUD:
     def get_teams_by_relation(self, relation: str):
         return self.db.query(Team).filter(Team.relation == relation).all()
     
+    def get_team_by_competition_id_and_name(self, competition_id, name: str):
+        return self.db.query(Team).filter(Team.competition_id == competition_id, Team.name == name).first()
+    
     def get_teams_by_competition_id_and_year(self, competition_id: int, year: int):
         return self.db.query(Team).filter(Team.competition_id == competition_id, Team.years.contains(year)).all()
     
