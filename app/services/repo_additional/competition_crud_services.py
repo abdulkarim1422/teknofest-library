@@ -28,21 +28,14 @@ def update_or_create_competition(
         image_link,
         tk_number,
         t3kys_number,
-        application_link_tr,
-        application_link_en,
-        application_link_ar,
-        tr_name,
-        tr_description,
-        tr_link,
-        en_name,
-        en_description,
-        en_link,
-        ar_name,
-        ar_description,
-        ar_link,
+        application_link,
+        comp_name,
+        comp_description,
+        comp_link,
         year,
         min_member,
-        max_member
+        max_member,
+        lang
 ):
     print(f"""
             received competition info:
@@ -50,21 +43,14 @@ def update_or_create_competition(
             image_link: {image_link}
             tk_number: {tk_number}
             t3kys_number: {t3kys_number}
-            application_link_tr: {application_link_tr}
-            application_link_en: {application_link_en}
-            application_link_ar: {application_link_ar}
-            tr_name: {tr_name}
-            tr_description: {tr_description}
-            tr_link: {tr_link}
-            en_name: {en_name}
-            en_description: {en_description}
-            en_link: {en_link}
-            ar_name: {ar_name}
-            ar_description: {ar_description}
-            ar_link: {ar_link}
+            application_link: {application_link}
+            comp_name: {comp_name}
+            comp_description: {comp_description}
+            comp_link: {comp_link}
             year: {year}
             min_member: {min_member}
-            max_member: {max_member}
+            max_member: {max_member}]
+            lang: {lang}
         """)
     
     if "teknofest.org/tr" in link:
