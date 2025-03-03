@@ -1,4 +1,6 @@
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column
+from sqlalchemy.types import JSON
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -21,10 +23,10 @@ class Member(SQLModel, table=True):
     country: str
     city: str
     district: str
-    team_ids: list[uuid.UUID]
+    team_ids: Optional[list[uuid.UUID]] = Field(default=None, sa_column=Column(JSON))
     status: str
     is_advisor: bool
     is_leader: bool
-    skills: list[str]
+    skills: Optional[list[str]] = Field(default=None, sa_column=Column(JSON))
     rating: int
-    comments: list[uuid.UUID]
+    comments: Optional[list[uuid.UUID]] = Field(default=None, sa_column=Column(JSON))
