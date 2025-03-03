@@ -54,7 +54,7 @@ def update_or_create_team(
                 team_link=team_link,
                 status=status
             )
-            team_crud.TeamCRUD.create_team(db_team)
+            team_crud_class.create_team(db_team)
 
         else: # update existing team
             db_team.members_list = members_list
