@@ -100,6 +100,9 @@ class ReportFileCRUD:
         self.db.commit()
         return db_report_file
     
+    def get_report_files_by_competition_id_and_team_id(self, competition_id: int, team_id: int):
+        return self.db.query(Report_File).filter(Report_File.competition_id == competition_id, Report_File.team_id == team_id).all()
+    
 class ResultFileCRUD:
     def __init__(self, db: Session):
         self.db = db
