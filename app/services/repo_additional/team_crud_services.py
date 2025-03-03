@@ -37,7 +37,7 @@ def update_or_create_team(
             status: {status}
         """)
     try:
-        competition_obj = competition_crud_services.get_competition_en_name_via_any_name(comp_name)
+        competition_obj = competition_crud_services.get_competition_obj_via_any_name(comp_name)
         if competition_obj:
             competition_id = competition_obj.id
         team_crud_class = team_crud.TeamCRUD()
