@@ -56,6 +56,15 @@ class CompetitionCRUD:
     
     def get_competition_by_t3kys_number(self, t3kys_number: str):
         return self.db.query(Competition).filter(Competition.t3kys_number == t3kys_number).first()
+    
+    def get_competition_by_tr_link(self, tr_link: str):
+        return self.db.query(Competition).filter(Competition.tr_link.contains(tr_link)).first()
+    
+    def get_competition_by_en_link(self, en_link: str):
+        return self.db.query(Competition).filter(Competition.en_link.contains(en_link)).first()
+    
+    def get_competition_by_ar_link(self, ar_link: str):
+        return self.db.query(Competition).filter(Competition.ar_link.contains(ar_link)).first()
 
 class ReportFileCRUD:
     def __init__(self, db: Session):
