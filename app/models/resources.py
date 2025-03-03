@@ -1,4 +1,6 @@
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column
+from sqlalchemy.types import JSON
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -14,4 +16,4 @@ class Resource(SQLModel, table=True):
     resource_url: str
     description: str
     year: int # The year that the resource is created
-    comments: list[uuid.UUID]
+    comments: Optional[list[uuid.UUID]] = Field(default=None, sa_column=Column(JSON))
