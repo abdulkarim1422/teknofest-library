@@ -13,7 +13,8 @@ async def download_teams_files(
 @router.get("/teams-all")
 async def download_all_teams_files(
     first_page: int = Query(..., description="first page number"),
-    last_page: int = Query(..., description="last page number")
+    last_page: int = Query(..., description="last page number"),
+    update_database: bool = Query(False, description="update database")
 ):
-    call.scrape_all_links(first_page, last_page)
+    call.scrape_all_links(first_page, last_page, update_database)
     return
