@@ -1,6 +1,6 @@
 from app.repositories import competition_crud
 from app.services.unify.function import find_original_sentence
-from app.models.competition import Competition
+from app.models.competition import Competition, Report_File
 
 def get_competition_application_link_via_en_name(name: str):
     competition_crud_class = competition_crud.CompetitionCRUD()
@@ -112,4 +112,62 @@ def update_or_create_competition(
 
     return competition_obj_new
 
+
+def update_or_create_report_file(
+        comp_name = None,
+        team_id = None,
+        year = None,
+        file_path = None,
+        rank = None,
+        stage = None,
+        language = None
+):
+    print(f"""
+            received report file info:
+            comp_name: {comp_name}
+            team_id: {team_id}
+            year: {year}
+            file_path: {file_path}
+            rank: {rank}
+            stage: {stage}
+    """)
+
+    # create new report file object
+    report_file_crud_class = competition_crud.ReportFileCRUD()
+    report_file_obj_new: Report_File = Report_File()
+    
+    # get competition object
+    competition_obj_from_db = get_competition_obj_via_any_name(comp_name)
+    competition_crud_class = competition_crud.CompetitionCRUD()
+    if competition_obj_from_db:
+        competition_id = competition_obj_from_db.id
+    else:
+        return
+
+    try:
+        report_file_obj_from_db = report_file_crud_class.get_report_files_by_competition_id_and_team_id(file_path)[0]
+        if report_file_obj_from_db:
+            report_file_obj_new = report_file_obj_from_db
+    except:
+        pass
+
+    # update or create report file
+    if competition_id:
+        report_file_obj_new.competition_id = competition_id
+    if team_id:
+        report_file_obj_new.team_id = team_id
+    if year:
+        report_file_obj_new.year = year
+    if file_path:
+        report_file_obj_new.file_path = file_path
+    if rank:
+        report_file_obj_new.rank = rank
+    if stage:
+        report_file_obj_new.stage = stage
+    if language:
+        report_file_obj_new.language = language
+
+    report_file_crud_class.update_report_file(report_file_obj_new.id, report_file_obj_new)
+
+    return report_file_obj_new
 
