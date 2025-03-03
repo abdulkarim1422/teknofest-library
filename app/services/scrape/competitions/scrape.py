@@ -38,14 +38,16 @@ def scrape_link(link, update_downloads: bool = False, update_database: bool = Fa
                     unified_comp_name = find_original_sentence(comp_name_in_link)
                     folder_path = os.path.join(os.getcwd(), unified_comp_name, "reports", folder_name)
                     os.makedirs(folder_path, exist_ok=True)
+                    report_file_path = os.path.join(folder_path, file_name)
+                    
                     if update_downloads:
-                        download.download_file(report_file_url, os.path.join(folder_path, file_name))
+                        download.download_file(report_file_url, report_file_path)
 
                     if update_database:
                         competition_crud_services.update_or_create_report_file(
                             comp_name=unified_comp_name,
                             year=year,
-                            file_path=os.path.join(folder_path, file_name),
+                            file_path=report_file_path,
                             rank="finalist",
                             stage="final-report",
                         )
