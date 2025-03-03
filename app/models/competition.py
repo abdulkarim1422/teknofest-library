@@ -12,21 +12,23 @@ class Competition(SQLModel, table=True):
     deleted_at: Optional[datetime] = None
     image_path: str
     # is_open: bool
-    tk_number: int # used in the Teams page
-    t3kys_number: int # used in the t3kys platform
-    application_link: str
-    tr_name: str
-    tr_description: str
-    tr_link: str
-    en_name: str
-    en_description: str
-    en_link: str
-    ar_name: str
-    ar_description: str
-    ar_link: str
+    tk_number: Optional[str] = None # used in the Teams page
+    t3kys_number: Optional[str] = None # used in the t3kys platform
+    application_link_tr: Optional[str] = None
+    application_link_en: Optional[str] = None
+    application_link_ar: Optional[str] = None
+    tr_name: Optional[str] = None
+    tr_description: Optional[str] = None
+    tr_link: Optional[str] = None
+    en_name: Optional[str] = None
+    en_description: Optional[str] = None
+    en_link: Optional[str] = None
+    ar_name: Optional[str] = None
+    ar_description: Optional[str] = None
+    ar_link: Optional[str] = None
     years: list[int] = Field(default_factory=list, sa_column=Column(JSON)) # The years that the competition is held
-    min_member: int # Minimum number of members in a team
-    max_member: int # Maximum number of members in a team
+    min_member: Optional[int] = None # Minimum number of members in a team
+    max_member: Optional[int] = None # Maximum number of members in a team
     # comments: list[uuid.UUID]
 
 class Report_File(SQLModel, table=True):
