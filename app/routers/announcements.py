@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Query
-from app.services import announcements
+from app.services.scrape import announcements
 
 router = APIRouter()
 
