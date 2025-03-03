@@ -17,7 +17,7 @@ def scrape_link(link, update_downloads: bool = False, update_database: bool = Fa
         response = requests.get(link, cookies={'sessionid': session_id})
     else:
         response = requests.get(link)
-        year = datetime.now().year
+        year = str(datetime.now().year)
     
     content = response.content
     soup = BeautifulSoup(content, 'html.parser')
