@@ -51,7 +51,7 @@ class TeamCRUD:
     def get_teams_by_competition_id(self, competition_id: int):
         return self.db.query(Team).filter(Team.competition_id == competition_id).all()
     
-    def get_teams_by_year(self, year: int):
+    def get_teams_by_year(self, year: str):
         return self.db.query(Team).filter(Team.years.contains(year)).all()
     
     def get_teams_by_status(self, status: str):
@@ -66,7 +66,7 @@ class TeamCRUD:
     def get_team_by_competition_id_and_name(self, competition_id, name: str):
         return self.db.query(Team).filter(Team.competition_id == competition_id, Team.name == name).first()
     
-    def get_teams_by_competition_id_and_year(self, competition_id: int, year: int):
+    def get_teams_by_competition_id_and_year(self, competition_id: int, year: str):
         return self.db.query(Team).filter(Team.competition_id == competition_id, Team.years.contains(year)).all()
     
     def get_teams_by_competition_id_and_status(self, competition_id: int, status: str):
@@ -78,5 +78,5 @@ class TeamCRUD:
     def get_teams_by_competition_id_and_relation(self, competition_id: int, relation: str):
         return self.db.query(Team).filter(Team.competition_id == competition_id, Team.relation == relation).all()
     
-    def get_team_by_name_and_year(self, name: str, year: int):
+    def get_team_by_name_and_year(self, name: str, year: str):
         return self.db.query(Team).filter(Team.name == name, Team.years.contains([year])).first()

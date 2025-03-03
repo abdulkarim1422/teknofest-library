@@ -57,7 +57,7 @@ def update_or_create_team(
             if status:
                 team_obj_new.competition_id = competition_id
             if year:
-                team_obj_new.years.append(int(year))
+                team_obj_new.years.append(year)
             if intro_file_path:
                 team_obj_new.intro_file_path = intro_file_path
             if team_link:
@@ -74,7 +74,7 @@ def update_or_create_team(
                 description=description,
                 institution_name=institution_name,
                 competition_id=competition_id,
-                years=[int(year)],
+                years=[year],
                 intro_file_path=intro_file_path,
                 team_link=team_link,
                 status=status
