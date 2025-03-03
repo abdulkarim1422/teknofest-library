@@ -67,8 +67,8 @@ class CompetitionCRUD:
         return self.db.query(Competition).filter(Competition.ar_link.contains(ar_link)).first()
 
 class ReportFileCRUD:
-    def __init__(self, db: Session):
-        self.db = db
+    def __init__(self):
+        self.db = Session(engine)
 
     def get_report_file(self, report_file_id: int):
         return self.db.query(Report_File).filter(Report_File.id == report_file_id).first()
@@ -105,7 +105,7 @@ class ReportFileCRUD:
     
 class ResultFileCRUD:
     def __init__(self, db: Session):
-        self.db = db
+        self.db = Session(engine)
     
     def get_result_file(self, result_file_id: int):
         return self.db.query(Result_File).filter(Result_File.id == result_file_id).first()
