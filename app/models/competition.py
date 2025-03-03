@@ -26,7 +26,7 @@ class Competition(SQLModel, table=True):
     ar_name: Optional[str] = None
     ar_description: Optional[str] = None
     ar_link: Optional[str] = None
-    years: list[int] = Field(default_factory=list, sa_column=Column(JSON)) # The years that the competition is held
+    years: list[str] = Field(default_factory=list, sa_column=Column(JSON)) # The years that the competition is held
     min_member: Optional[int] = None # Minimum number of members in a team
     max_member: Optional[int] = None # Maximum number of members in a team
     # comments: list[uuid.UUID]
@@ -38,7 +38,7 @@ class Report_File(SQLModel, table=True):
     deleted_at: Optional[datetime] = None
     competition_id: uuid.UUID
     team_id: Optional[uuid.UUID] = None
-    year: int
+    year: str
     file_path: str
     rank: Optional[str] = None  # "finalist", "derece"
     stage : Optional[str] = None  # "critical-design", "pre-assessment", "final-assessment", "final-presentation"
@@ -50,6 +50,6 @@ class Result_File(SQLModel, table=True):
     updated_at: datetime = Field(default=datetime.utcnow)
     deleted_at: Optional[datetime] = None
     competition_id: uuid.UUID
-    year: int
+    year: str
     stage: str # "final", "pre-assessment"
     file_path: str

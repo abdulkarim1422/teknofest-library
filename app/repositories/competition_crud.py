@@ -12,7 +12,7 @@ class CompetitionCRUD:
     def get_competitions(self, skip: int = 0, limit: int = 10):
         return self.db.query(Competition).offset(skip).limit(limit).all()
     
-    def get_all_competitions(self, year: int):
+    def get_all_competitions(self, year: str):
         return self.db.query(Competition).filter(Competition.year == year).all()
 
     def create_competition(self, competition: Competition):
@@ -48,7 +48,7 @@ class CompetitionCRUD:
     def get_competition_by_ar_name(self, name: str):
         return self.db.query(Competition).filter(Competition.ar_name.contains(name)).first()
     
-    def get_competitions_by_year(self, year: int):
+    def get_competitions_by_year(self, year: str):
         return self.db.query(Competition).filter(Competition.years.contains(year)).all()
     
     def get_competition_by_tk_number(self, tk_number: str):
