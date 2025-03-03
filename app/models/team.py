@@ -1,4 +1,7 @@
 from sqlmodel import SQLModel, Field
+from sqlalchemy import Column
+from sqlalchemy.types import JSON
+from sqlalchemy.dialects.postgresql import ARRAY, INTEGER
 from typing import Optional
 from datetime import datetime
 import uuid
@@ -13,11 +16,11 @@ class Team(SQLModel, table=True):
     stage: Optional[str] = None # University, High School, Middle School, etc.
     institution_name: Optional[str] = None
     member_count: Optional[int] = None
-    tap_members: Optional[list[uuid.UUID]] = None
-    members_list: Optional[list[str]] = None
+    tap_members: Optional[list[uuid.UUID]] = Field(default=None, sa_column=Column(JSON))
+    members_list: Optional[list[str]] = Field(default=None, sa_column=Column(JSON))
     leader: Optional[uuid.UUID] = None
     competition_id: uuid.UUID
-    years: list[int]
+    years: list[int] = Field(default_factory=list, sa_column=Column(ARRAY(INTEGER)))
     status: Optional[str] = None # "finalist", "derece", "etc"
     rank: Optional[int] = None
     relation: Optional[str] = None # central, related, friend, None
