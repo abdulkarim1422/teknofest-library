@@ -1,11 +1,11 @@
 from app.services.scrape.teams import scrape 
 import time
 
-def scrape_all_links(first_page=1, last_page=200):
+def scrape_all_links(first_page=1, last_page=200, update_database=False):
     count = 0
     for i in range(first_page, last_page):
         print(f"Processing page: {i}")
-        scrape.scrape_page(i)
+        scrape.scrape_page(i, update_database)
         
         # Wait for 300 seconds (5 minutes) after every 10 pages
         count += 1
