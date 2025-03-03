@@ -70,6 +70,7 @@ def scrape_page(page, update_database: bool = False):
 def scrape_team_page(team_link):
     try:
         team_page = requests.get(team_link)
+        team_page.encoding = team_page.apparent_encoding
         team_page.raise_for_status()
         team_page_soup = BeautifulSoup(team_page.text, 'html.parser')
 
@@ -80,7 +81,8 @@ def scrape_team_page(team_link):
         team_members_list = []
         members_row = team_page_soup.find('div', class_='report-team')
         for member_element in members_row.find_all('p'):
-            member_name = member_element.text.strip()
+            member_name = member_element.get_text(strip=True)
+            member_name = member_name.encode('utf-8').decode('utf-8') # TODO not encoding properly
             team_members_list.append(member_name)
 
         # team info
