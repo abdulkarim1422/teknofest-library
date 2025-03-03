@@ -38,13 +38,14 @@ def update_or_create_team(
             status: {status}
         """)
     try:
+        team_obj_new: Team = Team()
+        team_crud_class = team_crud.TeamCRUD()
+
         competition_obj = competition_crud_services.get_competition_obj_via_any_name(comp_name)
         if competition_obj:
             competition_id = competition_obj.id
-
-        team_obj_new: Team = Team()
-        team_crud_class = team_crud.TeamCRUD()
-        team_obj_from_db = team_crud_class.get_team_by_name_and_year(name=name, year=int(year))
+            # team_obj_from_db = team_crud_class.get_team_by_name_and_year(name=name, year=int(year))
+            team_obj_from_db = team_crud_class.get_team_by_competition_id_and_name(competition_id=competition_id, name=name)
 
         if team_obj_from_db: # update existing team
             if members_list:
@@ -56,7 +57,7 @@ def update_or_create_team(
             if status:
                 team_obj_new.competition_id = competition_id
             if year:
-                team_obj_new.year = year
+                team_obj_new.years.append(int(year))
             if intro_file_path:
                 team_obj_new.intro_file_path = intro_file_path
             if team_link:
@@ -73,7 +74,7 @@ def update_or_create_team(
                 description=description,
                 institution_name=institution_name,
                 competition_id=competition_id,
-                year=year,
+                years=[int(year)],
                 intro_file_path=intro_file_path,
                 team_link=team_link,
                 status=status
