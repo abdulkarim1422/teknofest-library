@@ -33,6 +33,7 @@ class Report_File(SQLModel, table=True):
     updated_at: datetime = Field(default=datetime.utcnow)
     deleted_at: Optional[datetime] = None
     competition_id: uuid.UUID
+    team_id: Optional[uuid.UUID] = None
     year: int
     file_path: str
     rank: Optional[str] = None  # "finalist", "derece"
