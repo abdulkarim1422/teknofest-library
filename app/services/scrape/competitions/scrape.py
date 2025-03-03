@@ -40,6 +40,15 @@ def scrape_link(link, update_downloads: bool = False, update_database: bool = Fa
                     os.makedirs(folder_path, exist_ok=True)
                     if update_downloads:
                         download.download_file(report_file_url, os.path.join(folder_path, file_name))
+
+                    if update_database:
+                        competition_crud_services.update_or_create_report_file(
+                            comp_name=unified_comp_name,
+                            year=year,
+                            file_path=os.path.join(folder_path, file_name),
+                            rank="finalist",
+                            stage="final-report",
+                        )
             else:
                 print("No x-subElement")
     else:
