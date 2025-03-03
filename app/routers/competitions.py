@@ -6,19 +6,21 @@ router = APIRouter()
 @router.get("/competition-scrape")
 async def scrape_competition(
     link: str = Query(..., description="competition link"),
+    update_downloads: bool = Query(False, description="update downloads"),
     update_database: bool = Query(False, description="update database"),
     year: str = Query(None, description="year")
 ):
-    scrape.scrape_link(link=link, update_database=update_database, year=year)
+    scrape.scrape_link(link=link, update_downloads=update_downloads, update_database=update_database, year=year)
     return
 
 @router.get("/competition-scrape-all")
 async def scrape_all_competitions(
     lang: str = Query("tr", description="language"),
+    update_downloads: bool = Query(False, description="update downloads"),
     update_database: bool = Query(False, description="update database"),
     year: str = Query(None, description="year")
 ):
-    scrape.scrape_all_links(lang=lang, update_database=update_database, year=year)
+    scrape.scrape_all_links(lang=lang, update_downloads=update_downloads, update_database=update_database, year=year)
     return
 
 @router.get("/competition-links")
