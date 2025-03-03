@@ -9,19 +9,19 @@ def get_competition_application_link_via_en_name(name: str):
         return None
     return competition_obj.application_link
 
-def get_competition_en_name_via_any_name(name: str):
+def get_competition_obj_via_any_name(name: str):
     competition_crud_class = competition_crud.CompetitionCRUD()
     unified_name = find_original_sentence(name)
     competition_obj = competition_crud_class.get_competition_by_en_name(name=unified_name)
-    if competition_obj is None:
+    if not competition_obj:
         competition_obj = competition_crud_class.get_competition_by_tr_name(name=name)
-        if competition_obj is None:
+        if not competition_obj:
             competition_obj = competition_crud_class.get_competition_by_en_name(name=name)
-            if competition_obj is None:
+            if not competition_obj:
                 competition_obj = competition_crud_class.get_competition_by_ar_name(name=name)
-                if competition_obj is None:
+                if not competition_obj:
                     return None
-    return competition_obj.en_name
+    return competition_obj
 
 def update_or_create_competition(
         link = None,
@@ -55,11 +55,10 @@ def update_or_create_competition(
     
     competition_obj_new: Competition = Competition()
 
-    competition_en_name_from_db = get_competition_en_name_via_any_name(comp_name)
+    competition_obj_from_db = get_competition_obj_via_any_name(comp_name)
     competition_crud_class = competition_crud.CompetitionCRUD()
-    if competition_en_name_from_db:
-        competition_id = competition_en_name_from_db.id
-        competition_obj_new = competition_crud_class.get_competition(competition_id)
+    if competition_obj_from_db:
+        competition_obj_new = competition_obj_from_db
 
 
     if lang == "tr" or "teknofest.org/tr" in link:
@@ -82,7 +81,7 @@ def update_or_create_competition(
         competition_obj_new.ar_link = comp_link
 
 
-    if competition_en_name_from_db:  # update existing competition
+    if competition_obj_from_db:  # update existing competition
         if image_link:
             competition_obj_new.image_path = image_link
         if tk_number:
@@ -96,7 +95,7 @@ def update_or_create_competition(
         if max_member:
             competition_obj_new.max_member = max_member
 
-        competition_crud_class.update_competition(competition_id, competition_obj_new)
+        competition_crud_class.update_competition(competition_obj_from_db.id, competition_obj_new)
 
     else:  # create new competition
         competition_obj_new.image_path=image_link
