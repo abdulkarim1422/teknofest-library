@@ -24,18 +24,18 @@ def get_competition_en_name_via_any_name(name: str):
     return competition_obj.en_name
 
 def update_or_create_competition(
-        link,
-        image_link,
-        tk_number,
-        t3kys_number,
-        application_link,
-        comp_name,
-        comp_description,
-        comp_link,
-        year,
-        min_member,
-        max_member,
-        lang
+        link = None,
+        image_link = None,
+        tk_number = None,
+        t3kys_number = None,
+        application_link = None,
+        comp_name = None,
+        comp_description = None,
+        comp_link = None,
+        year = None,
+        min_member = None,
+        max_member = None,
+        lang = None
 ):
     print(f"""
             received competition info:
@@ -49,7 +49,7 @@ def update_or_create_competition(
             comp_link: {comp_link}
             year: {year}
             min_member: {min_member}
-            max_member: {max_member}]
+            max_member: {max_member}
             lang: {lang}
         """)
     
