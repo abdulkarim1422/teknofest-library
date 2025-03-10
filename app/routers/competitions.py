@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Query
 from app.services.scrape.competitions import links_service, scrape
-
+from app.services.unify.function import find_original_sentence
 router = APIRouter()
 
 @router.get("/competition-scrape")
@@ -40,3 +40,9 @@ async def get_competition_names(
     lang: str = Query("tr", description="language")
 ):
     return links_service.get_all_name(lang)
+
+@router.get("/find-competition-name")
+async def find_comp_name(
+    name: str = Query(..., description="competition name")
+):
+    return find_original_sentence(sentence=name)
