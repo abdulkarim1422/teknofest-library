@@ -6,7 +6,7 @@ from app.services import download
 from app.services.unify.function import find_original_sentence
 from app.services.repo_additional import team_crud_services
 
-def scrape_page(page, update_database: bool = False):
+def scrape_page(page, update_downloads: bool = False, update_database: bool = False):
     try:
         link = f"https://teknofest.org/tr/competitions/competition_report/?search=&page={page}"
         response0 = requests.get(link)
@@ -27,19 +27,25 @@ def scrape_page(page, update_database: bool = False):
                     os.makedirs(folder_path, exist_ok=True)
 
                     full_report_file_path = None
+
+                    # download report file if exists
                     try:
                         report_link = tr.find_all('td')[2].find('a')['href']
                         base_file_name = unquote(os.path.basename(urlparse(report_link).path))
                         prefixed_file_name = f"{team_name}_{base_file_name}"
                         full_report_file_path = os.path.join(folder_path, prefixed_file_name)
-                        download.download_file(report_link, full_report_file_path)
+                        if update_downloads:
+                            download.download_file(report_link, full_report_file_path)
                     except:
                         print(f"report failed for {team_name}")
+
+                    # download team intro pahe as html file
                     try:
                         team_link_relative = tr.find_all('td')[3].find('a')['href']
                         team_link = urljoin("https://teknofest.org", team_link_relative)
                         full_intro_file_path = os.path.join(folder_path, f"{team_name}_intro.html")
-                        download.download_file(team_link, full_intro_file_path)
+                        if update_downloads:
+                            download.download_file(team_link, full_intro_file_path)
                     except:
                         print(f"team file failed for {team_name}")
 
