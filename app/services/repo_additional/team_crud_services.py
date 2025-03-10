@@ -40,6 +40,7 @@ def update_or_create_team(
     try:
         team_obj_new: Team = Team()
         team_crud_class = team_crud.TeamCRUD()
+        team_obj_from_db = None
 
         competition_obj = competition_crud_services.get_competition_obj_via_any_name(comp_name)
         if competition_obj:
