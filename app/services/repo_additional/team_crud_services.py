@@ -47,6 +47,9 @@ def update_or_create_team(
             competition_id = competition_obj.id
             # team_obj_from_db = team_crud_class.get_team_by_name_and_year(name=name, year=int(year))
             team_obj_from_db = team_crud_class.get_team_by_competition_id_and_name(competition_id=competition_id, name=name)
+        else:
+            print(f"ERROR0: Competition not found: {comp_name}")
+            return None
 
         if team_obj_from_db: # update existing team
             if members_list:
@@ -68,13 +71,14 @@ def update_or_create_team(
 
             team_crud_class.update_team(team_obj_from_db.id, team_obj_new)
             team_obj_new.id = team_obj_from_db.id # to use in report_file creation
+
         else: # create new team
             team_obj_new = Team(
                 name=name,
                 members_list=members_list,
                 description=description,
                 institution_name=institution_name,
-                competition_id=competition_id,
+                competition_id=competition_obj.id,
                 years=[year],
                 intro_file_path=intro_file_path,
                 team_link=team_link,
