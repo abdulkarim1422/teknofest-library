@@ -8,7 +8,7 @@ from app.services.unify.function import find_original_sentence
 from datetime import datetime
 from app.services.repo_additional import competition_crud_services
 
-def scrape_link(link, update_downloads: bool = False, update_database: bool = False, year=None, session_id=None):
+def scrape_link(link, check_prev_year_reports: bool = False, update_downloads: bool = False, update_database: bool = False, year=None, session_id=None):
     # set session_id if year is specified and session_id is not provided
     if session_id:
         response = requests.get(link, cookies={'sessionid': session_id})
@@ -23,38 +23,40 @@ def scrape_link(link, update_downloads: bool = False, update_database: bool = Fa
     soup = BeautifulSoup(content, 'html.parser')
     tabs_in_the_page = soup.find_all('div', class_="tab-pane tab-pane-navigation")
 
-    if tabs_in_the_page:
-        for tab in tabs_in_the_page:
-            if tab:
-                for li_list_element in tab.find_all("li"):
-                    if li_list_element.find('a') is None:
-                        continue
-                    report_file_url = unquote(li_list_element.find('a').get('href').strip())
-                    folder_name = li_list_element.find('a').find('p', class_="m-0 p-0 font-weight-bold").get_text().strip().replace('/', '-')
-                    
-                    file_name = os.path.basename(urlparse(report_file_url).path)
-                    
-                    comp_name_in_link = links_service.get_name_from_link(link)
-                    unified_comp_name = find_original_sentence(comp_name_in_link)
-                    folder_path = os.path.join(os.getcwd(), unified_comp_name, "reports", folder_name)
-                    os.makedirs(folder_path, exist_ok=True)
-                    report_file_path = os.path.join(folder_path, file_name)
-                    
-                    if update_downloads:
-                        download.download_file(report_file_url, report_file_path)
+    # reports
+    if check_prev_year_reports:
+        if tabs_in_the_page:
+            for tab in tabs_in_the_page:
+                if tab:
+                    for li_list_element in tab.find_all("li"):
+                        if li_list_element.find('a') is None:
+                            continue
+                        report_file_url = unquote(li_list_element.find('a').get('href').strip())
+                        folder_name = li_list_element.find('a').find('p', class_="m-0 p-0 font-weight-bold").get_text().strip().replace('/', '-')
+                        
+                        file_name = os.path.basename(urlparse(report_file_url).path)
+                        
+                        comp_name_in_link = links_service.get_name_from_link(link)
+                        unified_comp_name = find_original_sentence(comp_name_in_link)
+                        folder_path = os.path.join(os.getcwd(), unified_comp_name, "reports", folder_name)
+                        os.makedirs(folder_path, exist_ok=True)
+                        report_file_path = os.path.join(folder_path, file_name)
+                        
+                        if update_downloads:
+                            download.download_file(report_file_url, report_file_path)
 
-                    if update_database:
-                        competition_crud_services.update_or_create_report_file(
-                            comp_name=unified_comp_name,
-                            year=year,
-                            file_path=report_file_path,
-                            rank="finalist",
-                            stage="final-report",
-                        )
-            else:
-                print("No x-subElement")
-    else:
-        print("The specified element was not found.")
+                        if update_database:
+                            competition_crud_services.update_or_create_report_file(
+                                comp_name=unified_comp_name,
+                                year=year,
+                                file_path=report_file_path,
+                                rank="finalist",
+                                stage="final-report",
+                            )
+                else:
+                    print("No x-subElement")
+        else:
+            print("The specified element was not found.")
     
     # update database with competition data
     if update_database:
@@ -73,7 +75,8 @@ def scrape_link(link, update_downloads: bool = False, update_database: bool = Fa
             year=year,
         )
 
-def scrape_all_links(lang="tr", update_downloads: bool = False, update_database: bool = False, year=None):
+
+def scrape_all_links(lang="tr", check_prev_year_reports: bool = False, update_downloads: bool = False, update_database: bool = False, year=None):
     # set session_id if year is specified
     if year:
         session_id = get_session_id_for_specific_year(year)
@@ -82,7 +85,7 @@ def scrape_all_links(lang="tr", update_downloads: bool = False, update_database:
 
     all_links = links_service.get_all_links(lang)
     for link in all_links:
-        scrape_link(link=link, update_downloads=update_downloads, update_database=update_database, year=year, session_id=session_id)
+        scrape_link(link=link, check_prev_year_reports=check_prev_year_reports, update_downloads=update_downloads, update_database=update_database, year=year, session_id=session_id)
 
 
 
