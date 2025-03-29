@@ -28,6 +28,9 @@ def download_to_folder(url, DOWNLOAD_FOLDER):
         file_name = url.split('/')[-1]
         decoded_file_name = urllib.parse.unquote(file_name)
 
+        # Re-decode (e.g., from Latin-1 to UTF-8) if needed
+        decoded_file_name = decoded_file_name.encode("latin-1", errors="replace").decode("utf-8", errors="replace")
+
         sanitized_file_name = sanitize_filename(decoded_file_name)
 
         file_path = os.path.join(DOWNLOAD_FOLDER, sanitized_file_name)
