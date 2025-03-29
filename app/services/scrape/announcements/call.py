@@ -21,7 +21,12 @@ def main(year=2025, firstpage: int = 1, lastpage: int = 3, lang="tr"):
 
             file_urls  = parsing_announcement_page(announcement_page_url)
             # DOWNLOAD_FOLDER = str(str(year) + '/' + date + "_" + sanitize_filename(title))
-            FILE_PATH = os.path.join(os.getcwd(), "announcement_files", str(year), date + "_" + sanitize_filename(title))
+
+            safe_folder_name = sanitize_filename(date + "_" + title)
+            # (also limit length to avoid overshoot for the path)
+            safe_folder_name = safe_folder_name[:80]  # arbitrary cut
+    
+            FILE_PATH = os.path.join(os.getcwd(), "announcement_files", str(year), safe_folder_name)
             download_the_files(file_urls, FILE_PATH)
 
         print(f"End of page: {page}, {year}")
